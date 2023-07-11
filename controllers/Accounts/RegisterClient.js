@@ -3,7 +3,7 @@ const RegisteredClients = require("../../models/RegitserClient");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const registerClient = asyncHandler(async (req, res) => {
+const registerClientWithGoogle = asyncHandler(async (req, res) => {
   const { name, email } = req.body;
 
   const userExists = await RegisteredClients.findOne({ email: email });
@@ -42,6 +42,39 @@ const registerClient = asyncHandler(async (req, res) => {
   }
 });
 
+const registerClientWithEmail = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  const userExists = await RegisteredClients.findOne({ email: email });
+
+  const salt = await bcrypt.genSalt(10);
+  const encryptedPassword = await bcrypt.hash(password, salt);
+
+  if (userExists) {
+    res.status(200).json({
+      _id: userExists.id,
+      email: userExists.email,
+      token: generateTokenForEmail(userExists._id, userExists.email),
+    });
+  } else {
+    const newClient = await RegisteredClients.create({
+      email: email,
+      password: encryptedPassword,
+    });
+
+    if (newClient) {
+      res.status(201).json({
+        _id: newClient.id,
+        email: newClient.email,
+        token: generateTokenForEmail(newClient._id, newClient.email),
+      });
+    } else {
+      res.status(400);
+      throw new Error("Invalid User Data");
+    }
+  }
+});
+
 //  **Generating a Token Function
 const generateToken = (id, name, email) => {
   return jwt.sign({ id, name, email }, "bcsfSecretJWTEncryption", {
@@ -49,4 +82,10 @@ const generateToken = (id, name, email) => {
   });
 };
 
-module.exports = { registerClient };
+const generateTokenForEmail = (id, email) => {
+  return jwt.sign({ id, email }, "bcsfSecretJWTEncryption", {
+    expiresIn: "30d",
+  });
+};
+
+module.exports = { registerClientWithGoogle, registerClientWithEmail };
