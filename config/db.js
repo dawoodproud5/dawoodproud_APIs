@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 mongoose.set("strictQuery", true);
 
 const connectDB = async () => {
-  // const localDBUrl = "mongodb://localhost:27017/youtube";
+  const localDBUrl = "mongodb://localhost:27017/dawood-proud";
   const atlasDBUrl =
     "mongodb+srv://dawoodproud5:thankyouAllah786@consultation.hjgpho6.mongodb.net/";
 
