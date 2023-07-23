@@ -77,13 +77,13 @@ const registerClientWithEmail = asyncHandler(async (req, res) => {
 
 //  **Generating a Token Function
 const generateToken = (id, name, email) => {
-  return jwt.sign({ id, name, email }, "bcsfSecretJWTEncryption", {
+  return jwt.sign({ id, name, email }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
 };
 
 const generateTokenForEmail = (id, email) => {
-  return jwt.sign({ id, email }, "bcsfSecretJWTEncryption", {
+  return jwt.sign({ id, email }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
 };
