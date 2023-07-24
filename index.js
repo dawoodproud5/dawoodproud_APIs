@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(
   cors({
-    origin: "https://dawood-proudoff.vercel.app",
+    origin: ["https://dawood-proudoff.vercel.app", "http://localhost:3000"],
   })
 );
 
