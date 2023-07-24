@@ -12,6 +12,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use("/api/get/dawood", (req, res) => {
+  res.status(200).json({
+    status: "Success",
+    message: "Deployed successfully",
+  });
+});
+
 app.use("/api/user", require("./routes/Accounts"));
 app.use("/api/candidate", require("./routes/ApplyJob"));
 app.use("/api/client", require("./routes/Contact"));
