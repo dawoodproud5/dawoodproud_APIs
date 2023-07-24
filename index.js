@@ -13,10 +13,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(
-  cors({
-    origin: ["https://dawood-proudoff.vercel.app", "http://localhost:3000"],
-  })
-);
+    cors({
+      origin: ["https://dawood-proudoff.vercel.app", "http://localhost:3000"],
+    })
+  );
 
 app.use("/api/get/dawood", (req, res) => {
   res.status(200).json({
