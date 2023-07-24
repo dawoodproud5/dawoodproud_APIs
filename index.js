@@ -8,12 +8,6 @@ const { errorHandler } = require("./middleware/errorHandler");
 connectDB();
 const app = express();
 
-app.use(
-  cors({
-    origin: process.env.REQUEST_ORIGIN_PRODUCTION,
-  })
-);
-
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
