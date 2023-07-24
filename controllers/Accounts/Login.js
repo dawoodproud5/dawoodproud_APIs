@@ -15,7 +15,13 @@ const loginAdmin = asyncHandler(async (req, res) => {
       _id: adminExist.id,
       name: adminExist.name,
       email: adminExist.email,
-      token: generateToken(adminExist._id, adminExist.name, adminExist.email),
+      superAdmin: adminExist.superAdmin,
+      token: generateToken(
+        adminExist._id,
+        adminExist.name,
+        adminExist.email,
+        adminExist.superAdmin
+      ),
     });
   } else {
     res.status(400);
@@ -24,8 +30,8 @@ const loginAdmin = asyncHandler(async (req, res) => {
 });
 
 //  **Generating a Token Function
-const generateToken = (id, name, email) => {
-  return jwt.sign({ id, name, email }, process.env.JWT_SECRET, {
+const generateToken = (id, name, email, superAdmin) => {
+  return jwt.sign({ id, name, email, superAdmin }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
 };
