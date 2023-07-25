@@ -75,6 +75,20 @@ const registerClientWithEmail = asyncHandler(async (req, res) => {
   }
 });
 
+const getEmail = asyncHandler(async (req, res) => {
+  const emails = await RegisteredClients.find({}).sort({ createdAt: -1 });
+
+  try {
+    res.status(200).json({
+      message: "Email",
+      emails: emails,
+    });
+  } catch (error) {
+    res.status(400);
+    throw new Error("Error while getting email");
+  }
+});
+
 //  **Generating a Token Function
 const generateToken = (id, name, email) => {
   return jwt.sign({ id, name, email }, process.env.JWT_SECRET, {
@@ -88,4 +102,8 @@ const generateTokenForEmail = (id, email) => {
   });
 };
 
-module.exports = { registerClientWithGoogle, registerClientWithEmail };
+module.exports = {
+  registerClientWithGoogle,
+  registerClientWithEmail,
+  getEmail,
+};
