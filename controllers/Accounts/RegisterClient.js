@@ -89,6 +89,17 @@ const getEmail = asyncHandler(async (req, res) => {
   }
 });
 
+const deleteEmail = asyncHandler(async (req, res) => {
+  const deletedEmail = await RegisteredClients.findByIdAndDelete(req.params.id);
+
+  if (deletedEmail) {
+    res.status(200).json({ message: "Email deleted successfully" });
+  } else {
+    res.status(400);
+    throw new Error("Email not found");
+  }
+});
+
 //  **Generating a Token Function
 const generateToken = (id, name, email) => {
   return jwt.sign({ id, name, email }, process.env.JWT_SECRET, {
@@ -106,4 +117,5 @@ module.exports = {
   registerClientWithGoogle,
   registerClientWithEmail,
   getEmail,
+  deleteEmail,
 };
